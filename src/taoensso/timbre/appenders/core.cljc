@@ -88,7 +88,7 @@
         (fn self [data]
           (let [{:keys [output_]} data]
             (try
-              (when locking? (monitor-enter lock)) ; For thread safety, Ref. #251
+              ;; (when locking? (monitor-enter lock)) ; For thread safety, Ref. #251
               (with-open [^java.io.BufferedWriter w (jio/writer fname :append append?)]
                 (.write   w ^String (force output_))
                 (.newLine w))
@@ -100,9 +100,10 @@
                     (jio/make-parents fname)
                     (self (assoc data :spit-appender/retry? true)))))
 
-              (finally
-                (when locking?
-                  (monitor-exit lock)))))))}))
+              ;; (finally
+              ;;   (when locking?
+              ;;     (monitor-exit lock)))
+              ))))}))
 
 (comment
   (spit-appender)
